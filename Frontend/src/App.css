@@ -1,0 +1,141 @@
+/* App.css */
+
+/* Chat bubble styles */
+.chat-bubble-bot {
+  background-color: #821B2F;
+  color: white;
+  border-top-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  padding: 12px;
+  max-width: 85%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-size: 14px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.chat-bubble-user {
+  background-color: #EBC77D;
+  color: #3c3c3c;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  padding: 12px;
+  max-width: 80%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+/* Avatars */
+.avatar-bot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #3c3c3c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.avatar-user {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+/* Chat input container */
+.input-container {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+}
+
+.input-field {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Submit button */
+.btn-submit {
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.btn-submit-enabled {
+  background-color: #821B2F;
+}
+
+.btn-submit-enabled:hover {
+  background-color: #a22c44;
+}
+
+.btn-submit-disabled {
+  background-color: #e07b7b;
+  cursor: not-allowed;
+}
+
+/* Quick action buttons */
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background-color: #821B2F;
+  color: white;
+  border-radius: 25px;
+  border: none;
+  margin-bottom: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.quick-action-btn:hover {
+  transform: scale(1.01);
+}
+
+.quick-actions-container {
+  padding: 16px;
+  background-color: white;
+  border-top: 1px solid #ccc;
+}
+
+/* Loader message */
+.loader-msg {
+  max-width: 70%;
+  padding: 12px;
+  background-color: #821B2F;
+  color: white;
+  border-top-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-style: italic;
+  font-size: 14px;
+}

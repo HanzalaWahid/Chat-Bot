@@ -1,0 +1,10 @@
+{
+  "faqs": [
+    {
+      "id": "f01",
+      "category": "Delivery",
+      "question": "Do you offer delivery?",
+      "answer": "Yes, we deliver through FoodPanda and our own fleet within 5km."
+    }
+  ]
+}

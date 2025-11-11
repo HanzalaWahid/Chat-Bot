@@ -1,0 +1,20 @@
+{
+  "branches": [
+    {
+      "id": "khi01",
+      "city": "Karachi",
+      "name": "Clifton Branch",
+      "address": "99 Sea View Road, Clifton, Karachi",
+      "phone": "0300-5550101",
+      "opening_hours_id": "hours_clifton"
+    },
+    {
+      "id": "isb01",
+      "city": "Islamabad",
+      "name": "Blue Area Branch",
+      "address": "5 Jinnah Ave, Blue Area, Islamabad",
+      "phone": "051-5550101",
+      "opening_hours_id": "hours_bluearea"
+    }
+  ]
+}
