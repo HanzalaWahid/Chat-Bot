@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import logging
-from .chatbot_logic import load_data, get_bot_response
+from chatbot_logic import load_data, get_bot_response
 
 
 app = FastAPI(title="Restaurant Chatbot")

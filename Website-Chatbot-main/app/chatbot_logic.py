@@ -4,12 +4,10 @@ import re
 from fuzzywuzzy import fuzz, process
 from pathlib import Path
 
-# Determine the data directory robustly. The repository stores JSON under either
-# "Data" or "data" at the project root; try both so the code works on case-
-# sensitive filesystems as well as Windows.
+
 _BASE = Path(__file__).resolve().parent.parent
-# Prefer the lowercase `data` directory (common convention). If it doesn't
-# exist, fall back to `Data` for compatibility with older repo copies.
+
+
 _CANDIDATES = [_BASE / "data", _BASE / "Data"]
 DATA_DIR = None
 for p in _CANDIDATES:
@@ -225,6 +223,23 @@ def fuzzy_word_in_text(word, text, threshold=70):
             return True
     return False
 
+def extract_menu_keywords(user_msg):
+    """Extract potential menu item keywords from user message"""
+    normalized = normalize_text(user_msg)
+    
+    # Stop words to remove
+    stop_words = {
+        "what", "is", "price", "of", "the", "a", "an", "how", "much", "cost", "costs", 
+        "rate", "show", "me", "tell", "give", "i", "want", "can", "get", "do", "you", 
+        "have", "serve", "order", "list", "see", "available", "menu", "dish", "dishes", 
+        "food", "item", "items", "variants", "flavours", "flavors", "selection", "catalog", 
+        "card", "full", "all", "complete", "entire", "display", "view", "about", "information", 
+        "info", "details", "description", "please", "thanks", "thank", "hi", "hello"
+    }
+    
+    words = [w for w in normalized.split() if w not in stop_words and len(w) > 2]
+    return ' '.join(words)
+
 # Helper to search menu items
 def search_menu(user_msg, menu_data):
     all_items = []
@@ -252,13 +267,27 @@ def search_menu(user_msg, menu_data):
     if not all_items:
         return None
     
+    # Extract keywords from user message
+    query = extract_menu_keywords(user_msg)
+    if not query:
+        return None
+    
     try:
-        match, score = process.extractOne(user_msg, all_items)
-        if score >= 60:  # similarity threshold
+        match, score = process.extractOne(query, all_items)
+        if score >= 50:  # lowered threshold
             return match
     except Exception:
         # If extractOne fails, return None
         pass
+    
+    # Additional check: if any word in query is substring of item name
+    query_words = query.split()
+    for item in all_items:
+        item_lower = item.lower()
+        for word in query_words:
+            if word.lower() in item_lower:
+                return item
+    
     return None
 
 # Detect intent with improved NLP and flexibility

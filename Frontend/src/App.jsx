@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Utensils, X, ChevronLeft, Loader2, Zap } from 'lucide-react';
+import { Utensils, X, ChevronLeft, Loader2, Zap, Menu, Clock, MapPin, Truck } from 'lucide-react';
 import './App.css';
 
 const BOT_AVATAR = "👨‍🍳";
@@ -11,10 +11,10 @@ const initialMessages = [
 ];
 
 const quickActions = [
-  { label: "View Menu", action: "Show me the menu" },
-  { label: "Opening Hours", action: "What are your hours" },
-  { label: "Our Branches", action: "Where are your branches" },
-  { label: "Delivery Info", action: "Do you offer delivery" },
+  { label: "View Menu", action: "Show me the menu", icon: Menu },
+  { label: "Opening Hours", action: "What are your hours", icon: Clock },
+  { label: "Our Branches", action: "Where are your branches", icon: MapPin },
+  { label: "Delivery Info", action: "Do you offer delivery", icon: Truck },
 ];
 
 const ChatMessage = ({ message }) => {
@@ -137,9 +137,12 @@ const App = () => {
         <div ref={messagesEndRef} />
       </div>
 
+      <div className="divider"></div>
+
       <div className="quick-actions-container">
         {quickActions.map((item, idx) => (
           <button key={idx} className="quick-action-btn" onClick={() => handleQuickAction(item.action)} disabled={isLoading}>
+            <item.icon size={16} style={{ marginRight: '8px' }} />
             {item.label}
           </button>
         ))}
