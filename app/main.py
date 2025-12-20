@@ -2,7 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import logging
-from .chatbot_logic import load_data, get_bot_response
+from chatbot_logic import load_data, get_bot_response
+from fastapi import Request
 
 
 app = FastAPI(title="Restaurant Chatbot")
@@ -36,14 +37,35 @@ class UserMessage(BaseModel):
     message: str
 
 
+
+# --- Simple in-memory session store (for demo only, not for production) ---
+import uuid
+from fastapi.responses import JSONResponse
+
+user_sessions = {}
+
+def get_session(request: Request):
+    session_id = request.cookies.get("session_id")
+    if not session_id or session_id not in user_sessions:
+        session_id = str(uuid.uuid4())
+        user_sessions[session_id] = {}
+    session = user_sessions[session_id]
+    return session_id, session
+
 @app.post("/chat")
-def chat(user_message: UserMessage):
+async def chat(user_message: UserMessage, request: Request):
     data = getattr(app.state, "data", None)
     if data is None:
         return {"response": "Service starting up, please try again in a moment."}
+    session_id, session = get_session(request)
+    response = get_bot_response(user_message.message, data, session)
+    # Return session flags so frontend can hide buttons
+    # Convert counters to booleans (frontend expects true/false)
+    session_flags = {k: bool(v) for k, v in session.items() if k.startswith('shown_')}
+    resp = JSONResponse({"response": response, "sessionFlags": session_flags})
+    resp.set_cookie(key="session_id", value=session_id, httponly=True)
+    return resp
 
-    response = get_bot_response(user_message.message, data)
-    return {"response": response}
 
 
 class QueryRequest(BaseModel):
@@ -51,30 +73,23 @@ class QueryRequest(BaseModel):
 
 
 @app.post("/api/query")
-def api_query(req: QueryRequest):
-    """Frontend API endpoint that returns both answer and action buttons"""
+async def api_query(req: QueryRequest, request: Request):
+    """Frontend API endpoint that returns both answer and action buttons, with session context."""
     data = getattr(app.state, "data", None)
     if data is None:
         return {"answer": "Service starting up, please try again in a moment.", "actions": []}
-
-    answer = get_bot_response(req.message, data)
-    
-    # Return relevant actions/quick-buttons based on the user's message
+    session_id, session = get_session(request)
+    answer = get_bot_response(req.message, data, session)
     actions = []
     msg_lower = req.message.lower()
-    
-    # If greeting, show main action buttons
     if any(word in msg_lower for word in ["hi", "hello", "hey", "greet", "start"]):
         actions = ["View Menu", "Our Branches", "Opening Hours"]
-    # If they asked about menu
     elif any(word in msg_lower for word in ["menu", "dish", "food", "order", "burger", "pizza"]):
         actions = ["Full Menu", "Our Branches", "Order Online"]
-    # If they asked about branches
     elif any(word in msg_lower for word in ["branch", "location", "address", "where"]):
         actions = ["View Menu", "Opening Hours", "Contact"]
-    # If they asked about hours
     elif any(word in msg_lower for word in ["open", "hour", "timing", "close", "time"]):
         actions = ["View Menu", "Our Branches"]
-    
-    # Return in the shape the frontend expects
-    return {"answer": answer, "actions": actions}
+    resp = JSONResponse({"answer": answer, "actions": actions})
+    resp.set_cookie(key="session_id", value=session_id, httponly=True)
+    return resp

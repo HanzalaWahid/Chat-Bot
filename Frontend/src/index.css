@@ -1,53 +1,101 @@
-/* index.css */
+/* index.css - Modern Dark Theme */
 
 body {
   margin: 0;
-  font-family: sans-serif;
-  background-color: #1f1f1f;
-  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  background: linear-gradient(135deg, #0a4d4d 0%, #1a5f4f 50%, #0d3d3d 100%);
+  color: #e8f5f1;
+  min-height: 100vh;
+  background-attachment: fixed;
 }
 
 #root {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .chat-container {
   width: 100%;
-  max-width: 360px;
-  height: 90vh;
-  background-color: white;
+  max-width: 420px;
+  height: 92vh;
+  max-height: 800px;
+  background: rgba(20, 30, 35, 0.95);
   border-radius: 24px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  border: 1px solid #ddd;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .chat-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  border-bottom: 1px solid #ccc;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 40, 45, 0.8);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e8f5f1;
+  backdrop-filter: blur(10px);
+}
+
+.chat-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e8f5f1;
+}
+
+.chat-close-icon {
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  color: #e8f5f1;
+}
+
+.chat-close-icon:hover {
+  opacity: 1;
 }
 
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 12px;
-  background-color: #f9f9f9;
+  padding: 20px 16px;
+  background: linear-gradient(180deg, rgba(15, 25, 30, 0.6) 0%, rgba(20, 30, 35, 0.8) 100%);
   display: flex;
   flex-direction: column;
+  scroll-behavior: smooth;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 217, 163, 0.3);
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 217, 163, 0.5);
 }
 
 .chat-input-area {
-  padding: 12px;
-  border-top: 1px solid #ccc;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
-  gap: 8px;
-  background-color: white;
+  gap: 12px;
+  background: rgba(25, 35, 40, 0.9);
+  backdrop-filter: blur(10px);
 }
